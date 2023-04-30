@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import axios from 'axios';
+// import axios from 'axios';
 
 // const TWITTER_API_URL =
 // 	'https://api.twitter.com/1.1/statuses/user_timeline.json';
+var Token =
+	'AAAAAAAAAAAAAAAAAAAAAFt9nAEAAAAAHi8c%2B3HymzAUxGxBNE6FEEF7slM%3Dc1AiHxdsh9cqaSSkSJqICPjVWZ36HM0zrNGw4LUrL4KCxjvigL';
 
-const TweetList = ({ user }) => {
+const TweetList = ({ user, count }) => {
 	const [tweets, setTweets] = useState([]);
 
 	useEffect(() => {
-		const fetchTweets = async () => {
-			const response = await axios.get(TWITTER_API_URL, {
-				params: {
-					screen_name: user,
-					count: 10, // Replace with the desired number of tweets to display
-					tweet_mode: 'extended',
-				},
-				headers: {
-					Authorization: `Bearer AAAAAAAAAAAAAAAAAAAAAFt9nAEAAAAAcjXtzju4MZVYsf2P9wnbHtLLsnk%3DSWhyIf5mSnMSIvH2sHxYIVwRUhGMrl44zeMKYYR9SS8ttOzrm9`, // Replace with your Twitter API bearer token
-				},
-			});
-			setTweets(response.data);
+		const fetchTweetsFromUser = async () => {
+			const response = await fetch(
+				`https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=${user}&count=${count}`,
+				{
+					headers: {
+						Authorization: `Bearer ${Token}`,
+					},
+				}
+			);
+			const json = await response.json();
+			setTweets(json);
+			console.log(json);
 		};
 
-		fetchTweets();
+		fetchTweetsFromUser();
 	}, []);
 
 	const renderItem = ({ item }) => (

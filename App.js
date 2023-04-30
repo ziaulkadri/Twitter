@@ -5,7 +5,7 @@ import TweetList from './src/TweetList';
 const App = () => {
 	return (
 		<SafeAreaView style={styles.container}>
-			<TweetList user="elonmusk" />
+			<TweetList user="elonmusk" count={10} />
 		</SafeAreaView>
 	);
 };
